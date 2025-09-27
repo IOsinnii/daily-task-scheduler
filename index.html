@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Task Scheduler</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Daily Task Scheduler</h1>
+        
+        <!-- Task input form -->
+        <div class="task-form">
+            <input type="text" id="taskInput" placeholder="Enter a new task...">
+            
+            <div class="task-details">
+                <!-- Due date input -->
+                <div class="form-group">
+                    <label for="dueDate">Due Date:</label>
+                    <input type="date" id="dueDate">
+                </div>
+                
+                <!-- Category selection -->
+                <div class="form-group">
+                    <label for="category">Category:</label>
+                    <select id="category">
+                        <option value="personal">Personal</option>
+                        <option value="work">Work</option>
+                        <option value="shopping">Shopping</option>
+                        <option value="health">Health</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+            </div>
+            
+            <button id="addTask">Add Task</button>
+        </div>
+        
+        <!-- Task filter options -->
+        <div class="filter-container">
+            <label>Filter by:</label>
+            <select id="filterCategory">
+                <option value="all">All Categories</option>
+                <option value="personal">Personal</option>
+                <option value="work">Work</option>
+                <option value="shopping">Shopping</option>
+                <option value="health">Health</option>
+                <option value="other">Other</option>
+            </select>
+            <select id="filterStatus">
+                <option value="all">All Status</option>
+                <option value="active">Active</option>
+                <option value="completed">Completed</option>
+            </select>
+        </div>
+        
+        <!-- Task list container -->
+        <div class="task-list-container">
+            <h2>Your Tasks</h2>
+            <ul id="taskList"></ul>
+        </div>
+        
+        <!-- Task statistics -->
+        <div class="task-stats">
+            <p>Total Tasks: <span id="totalTasks">0</span></p>
+            <p>Completed: <span id="completedTasks">0</span></p>
+            <p>Pending: <span id="pendingTasks">0</span></p>
+        </div>
+        
+        <!-- Clear buttons -->
+        <div class="clear-buttons">
+            <button id="clearCompleted">Clear Completed</button>
+            <button id="clearAll">Clear All</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
