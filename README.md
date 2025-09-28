@@ -26,7 +26,7 @@ A simple, responsive daily task scheduler (to-do list) web application built wit
 3. Go to repository Settings > Pages
 4. Under "Source", select "main" branch
 5. Click "Save"
-6. Access site at `https://iosinnii.github.io/daily-task-scheduler/`
+6. Access site at https://iosinnii.github.io/daily-task-scheduler/
 
 ## Local Usage
 
