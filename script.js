@@ -6,6 +6,7 @@
  * - Filtering tasks by category and status
  * - Storing tasks in local storage for persistence
  * - Updating task statistics
+ * - Theme switching (Yantra / Sage)
  */
 
 // DOM Elements
@@ -29,11 +30,15 @@ let tasks = [];
 function init() {
     // Load tasks from local storage
     loadTasks();
-    
+
+    // Restore saved theme
+    const savedTheme = localStorage.getItem('theme') || 'theme-yantra';
+    applyTheme(savedTheme);
+
     // Set today's date as the default due date
     const today = new Date().toISOString().split('T')[0];
     dueDateInput.value = today;
-    
+
     // Add event listeners
     addTaskBtn.addEventListener('click', addTask);
     taskList.addEventListener('click', handleTaskActions);
@@ -41,56 +46,62 @@ function init() {
     filterStatus.addEventListener('change', filterTasks);
     clearCompletedBtn.addEventListener('click', clearCompleted);
     clearAllBtn.addEventListener('click', clearAll);
-    
+
+    // Theme switcher buttons
+    document.querySelectorAll('.theme-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const theme = btn.dataset.theme;
+            applyTheme(theme);
+            localStorage.setItem('theme', theme);
+        });
+    });
+
     // Initial render of tasks
     renderTasks();
+}
+
+/**
+ * Apply a theme class to the body and update active button state
+ * @param {string} theme - Theme class name (e.g. 'theme-yantra')
+ */
+function applyTheme(theme) {
+    document.body.className = theme;
+    document.querySelectorAll('.theme-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.theme === theme);
+    });
 }
 
 /**
  * Add a new task to the tasks array
  */
 function addTask() {
-    // Get input values
     const taskText = taskInput.value.trim();
     const dueDate = dueDateInput.value;
     const category = categorySelect.value;
-    
-    // Validate input
+
     if (taskText === '') {
         alert('Please enter a task!');
         return;
     }
-    
-    // Create new task object
+
     const newTask = {
-        id: Date.now(), // Use timestamp as unique ID
+        id: Date.now(),
         text: taskText,
         dueDate: dueDate,
         category: category,
         completed: false,
         createdAt: new Date()
     };
-    
-    // Add task to array
+
     tasks.push(newTask);
-    
-    // Save to local storage
     saveTasks();
-    
-    // Clear input fields
+
     taskInput.value = '';
-    
-    // Reset due date to today
     const today = new Date().toISOString().split('T')[0];
     dueDateInput.value = today;
-    
-    // Reset category to default
     categorySelect.value = 'personal';
-    
-    // Re-render task list
+
     renderTasks();
-    
-    // Focus on input field for next task
     taskInput.focus();
 }
 
@@ -100,14 +111,12 @@ function addTask() {
  */
 function handleTaskActions(e) {
     const target = e.target;
-    
-    // Check if delete button was clicked
-    if (target.classList.contains('delete-btn')) {
+
+    if (target.classList.contains('delete-btn') || target.closest('.delete-btn')) {
         const taskId = parseInt(target.closest('.task-item').dataset.id);
         deleteTask(taskId);
     }
-    
-    // Check if checkbox was clicked
+
     if (target.classList.contains('task-checkbox')) {
         const taskId = parseInt(target.closest('.task-item').dataset.id);
         toggleTaskComplete(taskId);
@@ -119,13 +128,8 @@ function handleTaskActions(e) {
  * @param {number} id - Task ID to delete
  */
 function deleteTask(id) {
-    // Filter out the task with the given ID
     tasks = tasks.filter(task => task.id !== id);
-    
-    // Save to local storage
     saveTasks();
-    
-    // Re-render task list
     renderTasks();
 }
 
@@ -134,18 +138,13 @@ function deleteTask(id) {
  * @param {number} id - Task ID to toggle
  */
 function toggleTaskComplete(id) {
-    // Find the task and toggle its completed status
     tasks = tasks.map(task => {
         if (task.id === id) {
             return { ...task, completed: !task.completed };
         }
         return task;
     });
-    
-    // Save to local storage
     saveTasks();
-    
-    // Re-render task list
     renderTasks();
 }
 
@@ -153,11 +152,8 @@ function toggleTaskComplete(id) {
  * Filter tasks based on category and status filters
  */
 function filterTasks() {
-    // Get filter values
     const categoryFilter = filterCategory.value;
     const statusFilter = filterStatus.value;
-    
-    // Apply filters and render
     renderTasks(categoryFilter, statusFilter);
 }
 
@@ -165,13 +161,8 @@ function filterTasks() {
  * Clear all completed tasks
  */
 function clearCompleted() {
-    // Filter out completed tasks
     tasks = tasks.filter(task => !task.completed);
-    
-    // Save to local storage
     saveTasks();
-    
-    // Re-render task list
     renderTasks();
 }
 
@@ -179,15 +170,9 @@ function clearCompleted() {
  * Clear all tasks
  */
 function clearAll() {
-    // Confirm before clearing all tasks
     if (confirm('Are you sure you want to clear all tasks?')) {
-        // Empty tasks array
         tasks = [];
-        
-        // Save to local storage
         saveTasks();
-        
-        // Re-render task list
         renderTasks();
     }
 }
@@ -198,50 +183,40 @@ function clearAll() {
  * @param {string} statusFilter - Status to filter by
  */
 function renderTasks(categoryFilter = 'all', statusFilter = 'all') {
-    // Clear current task list
     taskList.innerHTML = '';
-    
-    // Filter tasks based on category and status
+
     let filteredTasks = tasks;
-    
-    // Apply category filter
+
     if (categoryFilter !== 'all') {
         filteredTasks = filteredTasks.filter(task => task.category === categoryFilter);
     }
-    
-    // Apply status filter
+
     if (statusFilter === 'completed') {
         filteredTasks = filteredTasks.filter(task => task.completed);
     } else if (statusFilter === 'active') {
         filteredTasks = filteredTasks.filter(task => !task.completed);
     }
-    
-    // Sort tasks by due date (closest first)
+
     filteredTasks.sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
-    
-    // Create task elements
+
     filteredTasks.forEach(task => {
         const taskItem = document.createElement('li');
         taskItem.classList.add('task-item');
         taskItem.dataset.id = task.id;
-        
-        // Add completed class if task is completed
+
         if (task.completed) {
             taskItem.classList.add('completed');
         }
-        
-        // Format due date for display
+
         const dueDate = new Date(task.dueDate);
         const formattedDate = dueDate.toLocaleDateString('en-US', {
             year: 'numeric',
             month: 'short',
             day: 'numeric'
         });
-        
-        // Check if task is overdue
+
         const isOverdue = !task.completed && new Date() > dueDate;
-        
-        // Create task HTML
+
         taskItem.innerHTML = `
             <input type="checkbox" class="task-checkbox" ${task.completed ? 'checked' : ''}>
             <div class="task-content">
@@ -255,12 +230,10 @@ function renderTasks(categoryFilter = 'all', statusFilter = 'all') {
                 <button class="delete-btn"><i class="fas fa-trash"></i></button>
             </div>
         `;
-        
-        // Add to task list
+
         taskList.appendChild(taskItem);
     });
-    
-    // Update task statistics
+
     updateTaskStats();
 }
 
@@ -271,7 +244,7 @@ function updateTaskStats() {
     const totalTasks = tasks.length;
     const completedTasks = tasks.filter(task => task.completed).length;
     const pendingTasks = totalTasks - completedTasks;
-    
+
     totalTasksSpan.textContent = totalTasks;
     completedTasksSpan.textContent = completedTasks;
     pendingTasksSpan.textContent = pendingTasks;
