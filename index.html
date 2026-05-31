@@ -8,10 +8,17 @@
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body>
+<body class="theme-yantra">
     <div class="container">
         <h1>Daily Task Scheduler</h1>
-        
+
+        <!-- Theme Switcher -->
+        <div class="theme-switcher">
+            <span>Theme:</span>
+            <button class="theme-btn theme-yantra active" data-theme="theme-yantra" title="Yantra"></button>
+            <button class="theme-btn theme-sage" data-theme="theme-sage" title="Sage"></button>
+        </div>
+
         <!-- Task input form -->
         <div class="task-form">
             <input type="text" id="taskInput" placeholder="Enter a new task...">
