@@ -1,59 +1,141 @@
-/* 
- * styles.css - Main stylesheet for Daily Task Scheduler
- * Contains styling for the entire application with light green theme as requested
+/*
+ * styles.css - Daily Task Scheduler
+ * Visual themes ported from web-dev-antigravity (Yantra & Sage)
  */
 
-/* Global styles and variables */
+/* =====================
+   Theme Variables
+   ===================== */
+
+/* Default: Yantra (Light Blue) */
 :root {
-    --light-green: #e8f5e9;
-    --medium-green: #a5d6a7;
-    --dark-green: #2e7d32;
+    --bg-primary: #ffffff;
+    --bg-secondary: #f4f7fa;
+    --bg-tertiary: #e6ecf2;
+    --text-primary: #003366;
+    --text-secondary: #546e7a;
+    --accent-color: #0056b3;
+    --border-color: #dbe4ed;
+    --hover-color: #e6ecf2;
+
     --completed-color: #9e9e9e;
     --delete-color: #f44336;
     --border-radius: 5px;
     --box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    --font-family: 'Arial', sans-serif;
 }
 
+/* Theme: Sage (Soft Green Light) */
+body.theme-sage {
+    --bg-primary: #F4F7F6;
+    --bg-secondary: #FFFFFF;
+    --bg-tertiary: #E8ECEB;
+    --text-primary: #2F3E46;
+    --text-secondary: #52796F;
+    --accent-color: #84A98C;
+    --border-color: #CAD2C5;
+    --hover-color: #E0E7E4;
+}
+
+/* =====================
+   Global Reset
+   ===================== */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Arial', sans-serif;
+    font-family: var(--font-family);
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 body {
-    background-color: var(--light-green);
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
     padding: 20px;
     line-height: 1.6;
 }
 
-/* Main container styling */
+/* =====================
+   Theme Switcher
+   ===================== */
+.theme-switcher {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 16px;
+}
+
+.theme-switcher span {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-secondary);
+}
+
+.theme-btn {
+    width: 1.4rem;
+    height: 1.4rem;
+    border-radius: 50%;
+    border: 2px solid var(--border-color);
+    cursor: pointer;
+    transition: transform 0.2s, border-color 0.2s;
+}
+
+.theme-btn:hover {
+    transform: scale(1.15);
+    border-color: var(--text-primary);
+}
+
+.theme-btn.active {
+    transform: scale(1.2);
+    border-color: var(--text-primary);
+    box-shadow: 0 0 0 2px var(--accent-color);
+}
+
+.theme-btn.theme-yantra {
+    background: #003366;
+}
+
+.theme-btn.theme-sage {
+    background: #84A98C;
+}
+
+/* =====================
+   Main Container
+   ===================== */
 .container {
     max-width: 800px;
     margin: 0 auto;
-    background-color: white;
+    background-color: var(--bg-primary);
     padding: 20px;
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
+    border: 1px solid var(--border-color);
 }
 
 h1 {
     text-align: center;
-    color: var(--dark-green);
+    color: var(--text-primary);
     margin-bottom: 20px;
+    font-size: 1.8rem;
 }
 
 h2 {
-    color: var(--dark-green);
+    color: var(--text-primary);
     margin: 15px 0;
+    font-size: 1.1rem;
 }
 
-/* Task input form styling */
+/* =====================
+   Task Input Form
+   ===================== */
 .task-form {
     margin-bottom: 20px;
     padding: 15px;
-    background-color: var(--light-green);
+    background-color: var(--bg-secondary);
     border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
 }
 
 .task-details {
@@ -69,33 +151,49 @@ h2 {
 label {
     display: block;
     margin-bottom: 5px;
-    color: var(--dark-green);
+    color: var(--text-secondary);
     font-weight: bold;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
-input[type="text"], 
-input[type="date"], 
+input[type="text"],
+input[type="date"],
 select {
     width: 100%;
     padding: 10px;
-    border: 1px solid var(--medium-green);
+    border: 1px solid var(--border-color);
     border-radius: var(--border-radius);
-    font-size: 16px;
+    font-size: 15px;
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary);
 }
 
+input[type="text"]:focus,
+input[type="date"]:focus,
+select:focus {
+    outline: none;
+    border-color: var(--accent-color);
+}
+
+/* =====================
+   Buttons
+   ===================== */
 button {
-    background-color: var(--dark-green);
-    color: white;
+    background-color: var(--accent-color);
+    color: #fff;
     border: none;
     padding: 10px 15px;
     border-radius: var(--border-radius);
     cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s;
+    font-size: 15px;
+    transition: background-color 0.3s, transform 0.1s;
 }
 
 button:hover {
-    background-color: #1b5e20;
+    opacity: 0.88;
+    transform: translateY(-1px);
 }
 
 #addTask {
@@ -103,22 +201,34 @@ button:hover {
     margin-top: 10px;
 }
 
-/* Filter container styling */
+/* =====================
+   Filter Container
+   ===================== */
 .filter-container {
     display: flex;
     gap: 10px;
     align-items: center;
     margin-bottom: 15px;
     padding: 10px;
-    background-color: var(--light-green);
+    background-color: var(--bg-secondary);
     border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+}
+
+.filter-container label {
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    white-space: nowrap;
 }
 
 .filter-container select {
     flex: 1;
 }
 
-/* Task list styling */
+/* =====================
+   Task List
+   ===================== */
 .task-list-container {
     margin-bottom: 20px;
 }
@@ -130,18 +240,24 @@ button:hover {
 .task-item {
     display: flex;
     align-items: center;
-    padding: 10px;
-    border-bottom: 1px solid #eee;
-    transition: background-color 0.2s;
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border-color);
+    background-color: var(--bg-primary);
+    transition: background-color 0.2s, transform 0.2s;
+    border-radius: 4px;
+    margin-bottom: 4px;
 }
 
 .task-item:hover {
-    background-color: #f9f9f9;
+    background-color: var(--hover-color);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
 .task-checkbox {
     margin-right: 10px;
     cursor: pointer;
+    accent-color: var(--accent-color);
 }
 
 .task-content {
@@ -151,43 +267,35 @@ button:hover {
 .task-title {
     font-weight: bold;
     margin-bottom: 3px;
+    color: var(--text-primary);
 }
 
 .task-details-display {
-    font-size: 14px;
-    color: #666;
+    font-size: 13px;
+    color: var(--text-secondary);
 }
 
+/* Category Badges */
 .task-category {
     display: inline-block;
     padding: 2px 8px;
     border-radius: 10px;
-    font-size: 12px;
-    margin-right: 10px;
+    font-size: 11px;
+    margin-right: 8px;
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-tertiary);
+    color: var(--text-secondary);
 }
 
-.category-personal {
-    background-color: #bbdefb;
-}
-
-.category-work {
-    background-color: #c8e6c9;
-}
-
-.category-shopping {
-    background-color: #ffecb3;
-}
-
-.category-health {
-    background-color: #f8bbd0;
-}
-
-.category-other {
-    background-color: #e1bee7;
-}
+.category-personal  { background-color: #bbdefb; }
+.category-work      { background-color: #c8e6c9; }
+.category-shopping  { background-color: #ffecb3; }
+.category-health    { background-color: #f8bbd0; }
+.category-other     { background-color: #e1bee7; }
 
 .task-due-date {
     font-style: italic;
+    color: var(--text-secondary);
 }
 
 .task-actions {
@@ -201,6 +309,12 @@ button:hover {
     border: none;
     cursor: pointer;
     font-size: 18px;
+    padding: 0 4px;
+    transition: transform 0.15s;
+}
+
+.delete-btn:hover {
+    transform: scale(1.2);
 }
 
 .completed .task-title {
@@ -208,47 +322,78 @@ button:hover {
     color: var(--completed-color);
 }
 
-/* Task statistics styling */
+/* =====================
+   Task Statistics
+   ===================== */
 .task-stats {
     display: flex;
     justify-content: space-around;
     margin: 20px 0;
-    padding: 10px;
-    background-color: var(--light-green);
+    padding: 12px;
+    background-color: var(--bg-secondary);
     border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
 }
 
 .task-stats p {
     font-weight: bold;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-secondary);
 }
 
 .task-stats span {
-    color: var(--dark-green);
+    color: var(--accent-color);
+    font-size: 1.1rem;
 }
 
-/* Clear buttons styling */
+/* =====================
+   Clear Buttons
+   ===================== */
 .clear-buttons {
     display: flex;
     gap: 10px;
     justify-content: center;
 }
 
-#clearCompleted, #clearAll {
+#clearCompleted,
+#clearAll {
     flex: 1;
     max-width: 200px;
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
 }
 
-/* Responsive design */
+#clearCompleted:hover,
+#clearAll:hover {
+    background-color: var(--accent-color);
+    color: #fff;
+    border-color: var(--accent-color);
+}
+
+/* =====================
+   Scrollbar
+   ===================== */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg-primary); }
+::-webkit-scrollbar-thumb { background: var(--bg-tertiary); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--border-color); }
+
+/* =====================
+   Responsive
+   ===================== */
 @media (max-width: 600px) {
     .task-details {
         flex-direction: column;
         gap: 10px;
     }
-    
+
     .filter-container {
         flex-direction: column;
     }
-    
+
     .task-stats {
         flex-direction: column;
         align-items: center;
