@@ -1,0 +1,22 @@
+{
+  "name": "daily-task-scheduler",
+  "version": "1.0.0",
+  "description": "A simple app to schedule daily tasks — Electron desktop wrapper",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder"
+  },
+  "devDependencies": {
+    "electron": "^30.0.0",
+    "electron-builder": "^24.0.0"
+  },
+  "build": {
+    "appId": "com.iosinnii.dailytaskscheduler",
+    "productName": "Daily Task Scheduler",
+    "directories": { "output": "dist" },
+    "mac": { "category": "public.app-category.productivity" },
+    "win": { "target": "nsis" },
+    "linux": { "target": "AppImage" }
+  }
+}

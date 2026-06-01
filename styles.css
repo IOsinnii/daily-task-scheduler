@@ -1,6 +1,6 @@
 /*
  * styles.css - Daily Task Scheduler
- * Visual themes ported from web-dev-antigravity (Yantra & Sage)
+ * Visual themes: Yantra, Sage, Obsidian
  */
 
 /* =====================
@@ -35,6 +35,18 @@ body.theme-sage {
     --accent-color: #84A98C;
     --border-color: #CAD2C5;
     --hover-color: #E0E7E4;
+}
+
+/* Theme: Obsidian (Dark Mode) */
+body.theme-obsidian {
+    --bg-primary: #121212;
+    --bg-secondary: #1e1e1e;
+    --bg-tertiary: #2c2c2c;
+    --text-primary: #e0e0e0;
+    --text-secondary: #a0a0a0;
+    --accent-color: #bb86fc;
+    --border-color: #333;
+    --hover-color: #2a2a2a;
 }
 
 /* =====================
@@ -99,6 +111,10 @@ body {
 
 .theme-btn.theme-sage {
     background: #84A98C;
+}
+
+.theme-btn.theme-obsidian {
+    background: #121212;
 }
 
 /* =====================
@@ -323,6 +339,185 @@ button:hover {
 }
 
 /* =====================
+   Drag Handle & Dragging
+   ===================== */
+.drag-handle {
+    color: var(--text-secondary);
+    cursor: grab;
+    padding: 0 6px 0 0;
+    font-size: 14px;
+    opacity: 0.5;
+    flex-shrink: 0;
+}
+
+.drag-handle:hover {
+    opacity: 1;
+}
+
+.task-item.dragging {
+    opacity: 0.4;
+    background-color: var(--hover-color);
+}
+
+.task-item.drag-over {
+    border-top: 2px solid var(--accent-color);
+}
+
+/* =====================
+   View Toggle
+   ===================== */
+.view-toggle {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.view-btn {
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    padding: 7px 16px;
+    font-size: 0.88rem;
+}
+
+.view-btn.active {
+    background-color: var(--accent-color);
+    color: #fff;
+    border-color: var(--accent-color);
+}
+
+.view-btn:hover:not(.active) {
+    background-color: var(--hover-color);
+    transform: none;
+    opacity: 1;
+}
+
+/* =====================
+   Priority Badges
+   ===================== */
+.priority-badge {
+    display: inline-block;
+    padding: 1px 7px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.priority-high   { background-color: #ef5350; color: #fff; }
+.priority-medium { background-color: #ff9800; color: #fff; }
+.priority-low    { background-color: #66bb6a; color: #fff; }
+
+/* =====================
+   Reminder Bell
+   ===================== */
+.reminder-bell {
+    font-size: 13px;
+    margin-left: 4px;
+    vertical-align: middle;
+}
+
+/* =====================
+   Kanban Board
+   ===================== */
+.kanban-board {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 20px;
+    align-items: flex-start;
+}
+
+.kanban-column {
+    flex: 1;
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    min-width: 0;
+    transition: box-shadow 0.2s;
+}
+
+.kanban-column.drag-over {
+    box-shadow: 0 0 0 2px var(--accent-color);
+}
+
+.kanban-column-header {
+    padding: 10px 14px;
+    border-radius: var(--border-radius) var(--border-radius) 0 0;
+    border-top: 4px solid transparent;
+}
+
+.kanban-column-header.pending    { border-top-color: #ff9800; }
+.kanban-column-header.in-progress { border-top-color: #2196f3; }
+.kanban-column-header.completed  { border-top-color: #4caf50; }
+
+.kanban-column-header h3 {
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.kanban-tasks {
+    padding: 8px;
+    min-height: 200px;
+}
+
+.kanban-card {
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    cursor: grab;
+    transition: box-shadow 0.2s, transform 0.15s;
+    position: relative;
+}
+
+.kanban-card:hover {
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
+    transform: translateY(-1px);
+}
+
+.kanban-card.dragging {
+    opacity: 0.4;
+}
+
+.kanban-card-title {
+    font-weight: bold;
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+    padding-right: 24px;
+}
+
+.kanban-card-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    align-items: center;
+    font-size: 12px;
+}
+
+.kanban-delete-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: none;
+    border: none;
+    color: var(--delete-color);
+    font-size: 14px;
+    padding: 0 2px;
+    cursor: pointer;
+    opacity: 0.5;
+    transition: opacity 0.2s, transform 0.15s;
+}
+
+.kanban-delete-btn:hover {
+    opacity: 1;
+    transform: scale(1.2);
+}
+
+/* =====================
    Task Statistics
    ===================== */
 .task-stats {
@@ -384,6 +579,12 @@ button:hover {
 /* =====================
    Responsive
    ===================== */
+@media (max-width: 768px) {
+    .kanban-board {
+        flex-direction: column;
+    }
+}
+
 @media (max-width: 600px) {
     .task-details {
         flex-direction: column;
