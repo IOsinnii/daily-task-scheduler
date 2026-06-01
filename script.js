@@ -173,6 +173,18 @@ function renderView() {
 }
 
 /**
+ * Parse a YYYY-MM-DD date string as local midnight (avoids UTC-offset issues)
+ * @param {string} dateStr - Date string in YYYY-MM-DD format
+ * @returns {Date}
+ */
+function parseDueDate(dateStr) {
+    if (!dateStr) return new Date(NaN);
+    // Strip any existing time/timezone component and re-parse as local midnight
+    const datePart = dateStr.slice(0, 10);
+    return new Date(datePart + 'T00:00:00');
+}
+
+/**
  * Add a new task to the tasks array
  */
 function addTask() {
@@ -329,7 +341,7 @@ function renderTasks(categoryFilter = 'all', statusFilter = 'all') {
             taskItem.classList.add('completed');
         }
 
-        const dueDate = new Date(task.dueDate + 'T00:00:00');
+        const dueDate = parseDueDate(task.dueDate);
         const formattedDate = dueDate.toLocaleDateString('en-US', {
             year: 'numeric',
             month: 'short',
@@ -428,7 +440,7 @@ function renderKanban() {
         card.dataset.id = task.id;
         card.setAttribute('draggable', 'true');
 
-        const dueDate = new Date(task.dueDate + 'T00:00:00');
+        const dueDate = parseDueDate(task.dueDate);
         const formattedDate = dueDate.toLocaleDateString('en-US', {
             month: 'short',
             day: 'numeric'
@@ -496,9 +508,10 @@ function loadTasks() {
     const storedTasks = localStorage.getItem('tasks');
     if (storedTasks) {
         tasks = JSON.parse(storedTasks).map(task => ({
-            priority: 'medium',
-            status: task.completed ? 'completed' : 'pending',
-            ...task
+            ...task,
+            // Provide defaults only when values are absent or null
+            priority: task.priority || 'medium',
+            status: task.status || (task.completed ? 'completed' : 'pending')
         }));
     }
 }
@@ -511,7 +524,7 @@ function scheduleReminder(task) {
     if (!task.dueDate || task.completed) return;
     if (!('Notification' in window)) return;
 
-    const dueTime = new Date(task.dueDate + 'T00:00:00').getTime();
+    const dueTime = parseDueDate(task.dueDate).getTime();
     const now = Date.now();
     const sevenDaysMs = 7 * 24 * 60 * 60 * 1000;
 
