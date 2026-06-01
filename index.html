@@ -17,6 +17,7 @@
             <span>Theme:</span>
             <button class="theme-btn theme-yantra active" data-theme="theme-yantra" title="Yantra"></button>
             <button class="theme-btn theme-sage" data-theme="theme-sage" title="Sage"></button>
+            <button class="theme-btn theme-obsidian" data-theme="theme-obsidian" title="Obsidian"></button>
         </div>
 
         <!-- Task input form -->
@@ -41,12 +42,28 @@
                         <option value="other">Other</option>
                     </select>
                 </div>
+
+                <!-- Priority selection -->
+                <div class="form-group">
+                    <label for="priority">Priority:</label>
+                    <select id="priority">
+                        <option value="low">Low</option>
+                        <option value="medium" selected>Medium</option>
+                        <option value="high">High</option>
+                    </select>
+                </div>
             </div>
             
             <button id="addTask">Add Task</button>
         </div>
-        
-        <!-- Task filter options -->
+
+        <!-- View Toggle -->
+        <div class="view-toggle">
+            <button class="view-btn active" data-view="list"><i class="fas fa-list"></i> List</button>
+            <button class="view-btn" data-view="board"><i class="fas fa-columns"></i> Board</button>
+        </div>
+
+        <!-- Task filter options (List view only) -->
         <div class="filter-container">
             <label>Filter by:</label>
             <select id="filterCategory">
@@ -64,10 +81,32 @@
             </select>
         </div>
         
-        <!-- Task list container -->
+        <!-- Task list container (List view) -->
         <div class="task-list-container">
             <h2>Your Tasks</h2>
             <ul id="taskList"></ul>
+        </div>
+
+        <!-- Kanban Board (Board view) -->
+        <div class="kanban-board" id="kanbanBoard" style="display:none">
+            <div class="kanban-column" data-status="pending">
+                <div class="kanban-column-header pending">
+                    <h3><i class="fas fa-clock"></i> Pending</h3>
+                </div>
+                <div class="kanban-tasks" id="kanban-pending"></div>
+            </div>
+            <div class="kanban-column" data-status="in-progress">
+                <div class="kanban-column-header in-progress">
+                    <h3><i class="fas fa-spinner"></i> In Progress</h3>
+                </div>
+                <div class="kanban-tasks" id="kanban-in-progress"></div>
+            </div>
+            <div class="kanban-column" data-status="completed">
+                <div class="kanban-column-header completed">
+                    <h3><i class="fas fa-check-circle"></i> Completed</h3>
+                </div>
+                <div class="kanban-tasks" id="kanban-completed"></div>
+            </div>
         </div>
         
         <!-- Task statistics -->
