@@ -1,13 +1,13 @@
 /*
  * styles.css - Daily Task Scheduler
- * Visual themes ported from web-dev-antigravity (Yantra & Sage)
+ * Visual themes ported from web-dev-antigravity (Blue-white & Sage)
  */
 
 /* =====================
    Theme Variables
    ===================== */
 
-/* Default: Yantra (Light Blue) */
+/* Default: Blue-white (Light Blue) */
 :root {
     --bg-primary: #ffffff;
     --bg-secondary: #f4f7fa;
@@ -93,7 +93,7 @@ body {
     box-shadow: 0 0 0 2px var(--accent-color);
 }
 
-.theme-btn.theme-yantra {
+.theme-btn.theme-blue-white {
     background: #003366;
 }
 

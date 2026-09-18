@@ -6,7 +6,7 @@
  * - Filtering tasks by category and status
  * - Storing tasks in local storage for persistence
  * - Updating task statistics
- * - Theme switching (Yantra / Sage)
+ * - Theme switching (Blue-white / Sage)
  */
 
 // DOM Elements
@@ -32,7 +32,9 @@ function init() {
     loadTasks();
 
     // Restore saved theme
-    const savedTheme = localStorage.getItem('theme') || 'theme-yantra';
+    let savedTheme = localStorage.getItem('theme') || 'theme-blue-white';
+    // Migrate the old theme name
+    if (savedTheme === 'theme-yantra') savedTheme = 'theme-blue-white';
     applyTheme(savedTheme);
 
     // Set today's date as the default due date
@@ -62,7 +64,7 @@ function init() {
 
 /**
  * Apply a theme class to the body and update active button state
- * @param {string} theme - Theme class name (e.g. 'theme-yantra')
+ * @param {string} theme - Theme class name (e.g. 'theme-blue-white')
  */
 function applyTheme(theme) {
     document.body.className = theme;
